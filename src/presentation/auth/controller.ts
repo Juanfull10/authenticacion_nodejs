@@ -43,7 +43,12 @@ export class AuthController{
     }
 
     auth=(req:Request, res:Response)=>{
-        res.json('loginUser')
+
+        const {token}= req.params;
+        this.authServices.validateEmail(token)
+            .then((user)=>res.json(user))
+            .catch(error=>this.handleError(error,res))
+     
     }
 
 
