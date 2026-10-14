@@ -18,7 +18,7 @@ export class Authroutes {
       envs.MAILER_SECRET_KEY,
       envs.MAILER_EMAIL,
       envs.MAILER_SERVICE,
-   
+      envs.SEND_EMAIL,
     );
     const authServices= new AuthService(emailService);
       const controller = new AuthController(authServices);
