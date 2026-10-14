@@ -1,6 +1,6 @@
 # API de autenticación con Node.js + TypeScript
 
-API REST con registro, login, JWT y validación de email por correo.
+API REST con registro, login, JWT, validación de email por correo y gestión de categorías protegida con token.
 Usa Express, MongoDB (Mongoose), bcrypt y Nodemailer.
 
 ## Requisitos
@@ -56,6 +56,8 @@ El servidor queda en `http://localhost:3000`.
 
 ## Endpoints
 
+### Autenticación
+
 Base: `http://localhost:3000/api/auth`
 
 | Método | Ruta | Body (JSON) | Descripción |
@@ -65,6 +67,24 @@ Base: `http://localhost:3000/api/auth`
 | GET | `/validate-email/:token` | — | Valida el email (el enlace llega al correo) |
 
 La contraseña debe tener al menos 6 caracteres.
+
+### Categorías
+
+Base: `http://localhost:3000/api/categories`
+
+| Método | Ruta | Auth | Body (JSON) | Descripción |
+|---|---|---|---|---|
+| GET | `/` | No | — | Lista las categorías *(en desarrollo)* |
+| POST | `/` | **Sí** | `name`, `available` (opcional) | Crea una categoría ligada al usuario del token |
+
+Las rutas protegidas requieren el token que devuelve `/login`, en la cabecera `Authorization: Bearer <tu_token>`.
+
+## Probar la API
+
+1. `POST /api/auth/register` con `name`, `email` y `password`.
+2. Abre el correo de validación y pulsa el enlace. Para abrirlo desde otro dispositivo, usa un túnel (por ejemplo ngrok) y pon su URL en `WEBSERVICE_URL`.
+3. `POST /api/auth/login` y copia el `token` de la respuesta.
+4. `POST /api/categories` con la cabecera `Authorization: Bearer <token>` y un body como `{"name": "Ropa", "available": true}`.
 
 ## Scripts
 
@@ -78,3 +98,4 @@ La contraseña debe tener al menos 6 caracteres.
 
 - **`Authentication failed` al conectar con Mongo:** revisa que `MONGO_URL` tenga el formato `usuario:contraseña@host`. Si cambiaste las credenciales del `docker-compose.yml`, borra la carpeta `mongo/` y vuelve a levantar el contenedor.
 - **`EADDRINUSE ... :3000`:** ya hay otra copia de la app usando el puerto. Ciérrala con `Ctrl+C`.
+- **`No token provider` (401):** falta la cabecera `Authorization: Bearer <token>` en una ruta protegida.
