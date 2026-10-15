@@ -31,6 +31,16 @@ const userSchema =  new mongoose.Schema({
     }
 
 
+});
+
+userSchema.set('toJSON',{
+    virtuals:true,
+    versionKey:false,
+    transform:function(doc, ret, options) {
+        delete (ret as any)._id;
+        delete (ret as any).password;
+        
+    },
 })
 
 export const UserModer= mongoose.model('User',userSchema);

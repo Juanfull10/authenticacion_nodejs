@@ -32,8 +32,9 @@ Usa Express, MongoDB (Mongoose), bcrypt y Nodemailer.
    ```bash
    docker compose up -d
    ```
-
-5. Arranca el servidor en modo desarrollo:
+5. llenar la base de datos con datos de pruebas ejecutando `npm run seed`
+ 
+6. Arranca el servidor en modo desarrollo:
 
    ```bash
    npm run dev
